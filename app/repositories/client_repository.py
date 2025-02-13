@@ -7,19 +7,19 @@ class ClientRepository:
         client = Client(name=name)
         db.session.add(client)
         db.session.commit()
-        return Client.from_snapshot(client.snapshot())
+        return client.to_json()
 
     @staticmethod
     def get_client_by_id(client_id):
         client_db = Client.query.get(client_id)
         if client_db is None:
             return None
-        return Client.from_snapshot(client_db.snapshot())
+        return client_db.to_json()
 
     @staticmethod
     def get_all_clients():
         clients_db = Client.query.all()
-        return [Client.from_snapshot(client.snapshot()) for client in clients_db]
+        return [client.to_json() for client in clients_db]
 
     @staticmethod
     def update_client(client_id, new_name):
@@ -27,7 +27,7 @@ class ClientRepository:
         if client_db:
             client_db.name = new_name
             db.session.commit()
-            return Client.from_snapshot(client_db.snapshot())
+            return client_db.to_json()
         return None
 
     @staticmethod

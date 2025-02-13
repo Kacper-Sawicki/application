@@ -17,21 +17,17 @@ class CartRepository:
         cart_db = Cart.query.filter_by(client_id=client_id).first()
         if not cart_db:
             return None
-        cart = Cart.from_snapshot(cart_db.snapshot())
-        return cart
+        return cart_db.to_json()
 
     @staticmethod
     def add_product_to_cart(client_id, product):
         cart_db = Cart.query.filter_by(client_id=client_id).first()
         if not cart_db:
             return None, "no cart"
-        cart = Cart.from_snapshot(cart_db.snapshot())
+        cart_db.products = cart_db.products + [product.to_json()]
 
-        cart.products = cart.products + [product.to_json()]
-
-        cart_db.products = cart.products
         db.session.commit()
-        return cart, None
+        return cart_db.to_json(), None
 
     @staticmethod
     def delete_cart(cart_id):

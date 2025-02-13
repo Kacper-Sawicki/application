@@ -8,8 +8,11 @@ from app.repositories.order_repository import OrderRepository
 
 
 
-#client
+
 def init_routes(app):
+
+    # client
+
     @app.route("/clients/add", methods=["POST"])
     def clientadd():
         name = request.json.get('name')
@@ -21,10 +24,10 @@ def init_routes(app):
 
     @app.route("/clients", methods=["GET"])
     def clients():
-        clientss = ClientRepository.get_all_clients()
+        clients = ClientRepository.get_all_clients()
         return make_response(jsonify({
             "success": True,
-            "data": [client.to_json() for client in clientss]
+            "data": [client.to_json() for client in clients]
         }))
 
     @app.route("/clients/change/<int:client_id>", methods=["PUT"])
@@ -56,10 +59,10 @@ def init_routes(app):
 
     @app.route("/products", methods=["GET"])
     def products():
-        productss = ProductRepository.get_all_products()
+        products = ProductRepository.get_all_products()
         return make_response(jsonify({
             "success": True,
-            "data": [product.to_json() for product in productss]
+            "data": [product.to_json() for product in products]
         }))
 
     @app.route("/products/change/<int:product_id>", methods=["PUT"])
